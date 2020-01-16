@@ -17,7 +17,9 @@ defmodule GraphBanking.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/accounts", AccountController
+    resources "/accounts", AccountController do
+      post "/transaction", AccountController, :add_transaction
+    end
   end
 
   # Other scopes may use custom stacks.

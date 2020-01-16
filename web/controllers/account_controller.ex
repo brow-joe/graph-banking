@@ -2,6 +2,9 @@ defmodule GraphBanking.AccountController do
   use GraphBanking.Web, :controller
 
   alias GraphBanking.Account
+  alias GraphBanking.Transaction
+
+  plug :scrub_params, "transaction" when action in [:add_transaction]
 
   def index(conn, _params) do
     accounts = Repo.all(Account)
@@ -62,4 +65,20 @@ defmodule GraphBanking.AccountController do
     |> put_flash(:info, "Account deleted successfully.")
     |> redirect(to: account_path(conn, :index))
   end
+
+  def add_transaction(conn, %{"transaction" => transaction_params, "account_id" => account_id}) do
+    changeset = Transaction.changeset(%Transaction{}, Map.put(transaction_params, "account_id", account_id))
+    account = Account |> Repo.get(account_id) |> Repo.preload([:transactions])
+
+    if changeset.valid? do
+      Repo.insert(changeset)
+
+      conn
+      |> put_flash(:info, "Transaction added.")
+      |> redirect(to: account_path(conn, :show, account))
+    else
+      render(conn, "show.html", account: account, changeset: changeset)
+    end
+  end
+
 end
