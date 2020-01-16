@@ -20,5 +20,6 @@ defmodule GraphBanking.Transaction do
     |> validate_required([:address])
     |> validate_required([:amount])
     |> validate_required([:when])
+    |> validate_number(:amount, greater_than: -1)
   end
 end

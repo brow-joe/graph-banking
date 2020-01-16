@@ -16,5 +16,6 @@ defmodule GraphBanking.Account do
     struct
     |> cast(params, [:current_balance])
     |> validate_required([:current_balance])
+    |> validate_number(:current_balance, greater_than: -1)
   end
 end
