@@ -15,5 +15,6 @@ defmodule GraphBanking.Account do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:current_balance])
+    |> validate_required([:current_balance])
   end
 end

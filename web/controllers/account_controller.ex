@@ -68,7 +68,8 @@ defmodule GraphBanking.AccountController do
   end
 
   def add_transaction(conn, %{"transaction" => transaction_params, "account_id" => account_id}) do
-    changeset = Transaction.changeset(%Transaction{}, Map.put(transaction_params, "account_id", account_id))
+    params = Map.put(transaction_params, "when", DateTime.utc_now)
+    changeset = Transaction.changeset(%Transaction{}, Map.put(params, "account_id", account_id))
     account = Account |> Repo.get(account_id) |> Repo.preload([:transactions])
 
     if changeset.valid? do

@@ -17,5 +17,8 @@ defmodule GraphBanking.Transaction do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:address, :amount, :when, :account_id])
+    |> validate_required([:address])
+    |> validate_required([:amount])
+    |> validate_required([:when])
   end
 end
