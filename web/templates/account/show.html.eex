@@ -1,0 +1,18 @@
+<h2>Show account</h2>
+
+<ul>
+
+  <li>
+    <strong>UUID:</strong>
+    <%= @account.id %>
+  </li>
+
+  <li>
+    <strong>Current balance:</strong>
+    <%= @account.current_balance %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: account_path(@conn, :edit, @account) %>
+<%= link "Back", to: account_path(@conn, :index) %>
