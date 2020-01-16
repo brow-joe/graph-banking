@@ -3,19 +3,21 @@
 <table class="table">
   <thead>
     <tr>
-      <th>UUID</th>
-      <th>Current balance</th>
-      <th></th>
+      <th class="text-center">UUID</th>
+      <th class="text-center">Current balance</th>
+      <th class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
 <%= for account <- @accounts do %>
     <tr>
-      <td><%= account.id %></td>
-      <td><%= account.current_balance %></td>
-      <td class="text-right">
-        <%= link "Show", to: account_path(@conn, :show, account), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: account_path(@conn, :edit, account), class: "btn btn-default btn-xs" %>
+      <td class="text-center"><%= account.id %></td>
+      <td class="text-center"><%= account.current_balance %></td>
+      <td class="text-center">
+        <%= link "Show", to: account_path(@conn, :show, account), class: "btn btn-success btn-xs" %>
+        &nbsp;
+        <%= link "Edit", to: account_path(@conn, :edit, account), class: "btn btn-warning btn-xs" %>
+        &nbsp;
         <%= link "Delete", to: account_path(@conn, :delete, account), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
@@ -23,4 +25,4 @@
   </tbody>
 </table>
 
-<%= link "New account", to: account_path(@conn, :new) %>
+<%= link "New Account", to: account_path(@conn, :new), class: "btn btn-primary" %>

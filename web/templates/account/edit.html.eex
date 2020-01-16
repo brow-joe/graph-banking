@@ -1,6 +1,8 @@
-<h2>Edit account</h2>
+<div class="row">
+  <div class="col-sm-4"><h4>Edit Account</h4></div>
+  <div class="col-sm-6"></div>
+  <div class="col-sm-2"><%= link "Back", to: account_path(@conn, :index), class: "btn btn-danger" %></div>
+</div>
 
 <%= render "form.html", changeset: @changeset,
                         action: account_path(@conn, :update, @account) %>
-
-<%= link "Back", to: account_path(@conn, :index) %>

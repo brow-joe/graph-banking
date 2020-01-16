@@ -1,18 +1,34 @@
-<h2>Show account</h2>
+<div>
+  <div class="row">
+    <div class="col-sm-4"><h4>Show Account</h4></div>
+    <div class="col-sm-6"></div>
+    <div class="col-sm-2"><%= link "Back", to: account_path(@conn, :index), class: "btn btn-danger" %></div>
+  </div>
+  <div>
+    <ul>
+      <li>
+        <strong>UUID:</strong>
+        <%= @account.id %>
+      </li>
+      <li>
+        <strong>Current balance:</strong>
+        <%= @account.current_balance %>
+      </li>
+    </ul>
+  </div>
+  <%= link "Submit", to: account_path(@conn, :edit, @account), class: "btn btn-primary" %>
+</div>
 
-<ul>
+<div>
+  <h2>Create New Transaction</h2>
+  <div>
+    <%= render "transaction_form.html", account: @account, changeset: @changeset, action: account_account_path(@conn, :add_transaction, @account) %>
+  </div>
+</div>
 
-  <li>
-    <strong>UUID:</strong>
-    <%= @account.id %>
-  </li>
-
-  <li>
-    <strong>Current balance:</strong>
-    <%= @account.current_balance %>
-  </li>
-
-</ul>
-
-<%= link "Edit", to: account_path(@conn, :edit, @account) %>
-<%= link "Back", to: account_path(@conn, :index) %>
+<div>
+  <h2>View Transaction</h2>
+  <div>
+    <%= render "transactions.html", account: @account %>
+  </div>
+</div>

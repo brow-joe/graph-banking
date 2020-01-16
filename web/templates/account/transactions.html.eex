@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for transaction <- @account.transactions do %>
+    <tr>
+      <td><%= transaction.address %></td>
+      <td><%= transaction.amount %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
