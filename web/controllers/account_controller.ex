@@ -73,11 +73,15 @@ defmodule GraphBanking.AccountController do
     account = Account |> Repo.get(account_id) |> Repo.preload([:transactions])
 
     if changeset.valid? do
-      Repo.insert(changeset)
+      if account.id != params["address"] do
+        Repo.insert(changeset)
       
-      conn
-      |> put_flash(:info, "Transaction added.")
-      |> redirect(to: account_path(conn, :show, account))
+        conn
+        |> put_flash(:info, "Transaction added.")
+        |> redirect(to: account_path(conn, :show, account))
+      else
+        render(conn, "show.html", account: account, changeset: changeset)
+      end
     else
       render(conn, "show.html", account: account, changeset: changeset)
     end
