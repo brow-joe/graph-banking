@@ -22,6 +22,6 @@
   </div>
 
   <div class="form-group">
-    <%= submit "Add transaction", class: "btn btn-primary" %>
+    <%= submit "Create New Transaction", class: "btn btn-primary" %>
   </div>
 <% end %>

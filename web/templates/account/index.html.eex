@@ -14,11 +14,11 @@
       <td class="text-center"><%= account.id %></td>
       <td class="text-center"><%= account.current_balance %></td>
       <td class="text-center">
-        <%= link "Show", to: account_path(@conn, :show, account), class: "btn btn-success btn-xs" %>
+        <%= link "View", to: account_path(@conn, :show, account), class: "btn btn-success btn-xs" %>
         &nbsp;
         <%= link "Edit", to: account_path(@conn, :edit, account), class: "btn btn-warning btn-xs" %>
-        &nbsp;
-        <%= link "Delete", to: account_path(@conn, :delete, account), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <!-- &nbsp;
+        <%= link "Delete", to: account_path(@conn, :delete, account), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %> -->
       </td>
     </tr>
 <% end %>

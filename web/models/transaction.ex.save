@@ -2,20 +2,22 @@ defmodule GraphBanking.Transaction do
   use GraphBanking.Web, :model
 
   schema "transactions" do
-    field :address, Ecto.UUID
+    field :uuid, :uuid
+    field :address, :string-string
     field :amount, :decimal
     field :when, Ecto.DateTime
-
-    belongs_to :account, GraphBanking.Account, foreign_key: :account_id
+    belongs_to :transaction, GraphBanking.Transaction, foreign_key: :account_id
 
     timestamps()
   end
+
+  @required_fields ~w(uuid address amount when account_id)
 
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:address, :amount, :when, :account_id])
+    |> cast(params, @required_fields)
   end
 end

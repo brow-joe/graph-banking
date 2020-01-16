@@ -1,15 +1,35 @@
 <table class="table">
   <thead>
     <tr>
-      <th></th>
-      <th></th>
+      <th class="text-center">UUID</th>
+      <th class="text-center">Address</th>
+      <th class="text-center">Amount</th>
+      <th class="text-center">When</th>
     </tr>
   </thead>
   <tbody>
 <%= for transaction <- @account.transactions do %>
     <tr>
-      <td><%= transaction.address %></td>
-      <td><%= transaction.amount %></td>
+      <td class="text-center">
+        <small>
+          <%= transaction.id %>
+        </small>
+      </td>
+      <td class="text-center">
+        <small>
+          <%= transaction.address %>
+        </small>
+      </td>
+      <td class="text-center">
+        <small>
+          <%= transaction.amount %>
+        </small>
+      </td>
+      <td class="text-center">
+        <small>
+          <%= transaction.when %>
+        </small>
+      </td>
     </tr>
 <% end %>
   </tbody>

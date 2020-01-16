@@ -1,6 +1,6 @@
 <div>
   <div class="row">
-    <div class="col-sm-4"><h4>Show Account</h4></div>
+    <div class="col-sm-4"><h4>View Account</h4></div>
     <div class="col-sm-6"></div>
     <div class="col-sm-2"><%= link "Back", to: account_path(@conn, :index), class: "btn btn-danger" %></div>
   </div>
@@ -16,7 +16,7 @@
       </li>
     </ul>
   </div>
-  <%= link "Submit", to: account_path(@conn, :edit, @account), class: "btn btn-primary" %>
+  <%= link "Edit", to: account_path(@conn, :edit, @account), class: "btn btn-warning" %>
 </div>
 
 <div>
