@@ -5,15 +5,18 @@ defmodule GraphBanking.Account do
     field :uuid, :string
     field :balance, :decimal
 
+    has_many :transactions, GraphBanking.Transaction
+
     timestamps()
   end
+
+  @required_fields ~w(uuid, balance)
 
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:uuid, :balance])
-    |> validate_required([:uuid, :balance])
+    |> cast(params, @required_fields)
   end
 end
