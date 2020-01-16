@@ -4,6 +4,8 @@ defmodule GraphBanking.Account do
   schema "accounts" do
     field :current_balance, :decimal
 
+    has_many :transactions, GraphBanking.Transaction
+
     timestamps()
   end
 
