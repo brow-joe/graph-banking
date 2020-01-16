@@ -71,11 +71,15 @@ defmodule GraphBanking.AccountController do
     changeset = Transaction.changeset(%Transaction{}, Map.put(transaction_params, "account_id", account_id))
     account = Account |> Repo.get(account_id) |> Repo.preload([:transactions])
 
-    Repo.insert(changeset)
-    
-    conn
-    |> put_flash(:info, "Transaction added.")
-    |> redirect(to: account_path(conn, :show, account))
+    if changeset.valid? do
+      Repo.insert(changeset)
+      
+      conn
+      |> put_flash(:info, "Transaction added.")
+      |> redirect(to: account_path(conn, :show, account))
+    else
+      render(conn, "show.html", account: account, changeset: changeset)
+    end
   end
 
 end
