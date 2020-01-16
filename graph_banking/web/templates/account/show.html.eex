@@ -3,6 +3,11 @@
 <ul>
 
   <li>
+    <strong>Uuid:</strong>
+    <%= @account.id %>
+  </li>
+
+  <li>
     <strong>Currentbalance:</strong>
     <%= @account.currentBalance %>
   </li>

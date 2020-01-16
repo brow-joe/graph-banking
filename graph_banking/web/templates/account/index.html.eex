@@ -3,16 +3,16 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Uuid</th>
       <th>Currentbalance</th>
-
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for account <- @accounts do %>
     <tr>
+      <td><%= account.id %></td>
       <td><%= account.currentBalance %></td>
-
       <td class="text-right">
         <%= link "Show", to: account_path(@conn, :show, account), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: account_path(@conn, :edit, account), class: "btn btn-default btn-xs" %>
