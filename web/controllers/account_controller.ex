@@ -79,7 +79,9 @@ defmodule GraphBanking.AccountController do
       current_balance = source.current_balance
       if target != nil and source.id != target.id do
         if amount > current_balance do
-          render(conn, "show.html", account: source, changeset: changeset)
+          conn
+          |> put_flash(:error, "The account has no funds for this operation!")
+          |> redirect(to: account_path(conn, :show, source))
         else
           Repo.transaction(fn ->
             Repo.insert(changeset)
@@ -99,10 +101,14 @@ defmodule GraphBanking.AccountController do
           |> redirect(to: account_path(conn, :show, source))
         end
       else
-        render(conn, "show.html", account: source, changeset: changeset)
+        conn
+        |> put_flash(:error, "Cannot make a transaction from the same source!")
+        |> redirect(to: account_path(conn, :show, source))
       end
     else
-      render(conn, "show.html", account: source, changeset: changeset)
+      conn
+      |> put_flash(:error, "Invalid Transaction!")
+      |> redirect(to: account_path(conn, :show, source))
     end
   end
 
