@@ -77,33 +77,39 @@ defmodule GraphBanking.AccountController do
       target = Repo.get(Account, id) |> Repo.preload([:transactions])
       amount = Decimal.new(params["amount"])
       current_balance = source.current_balance
-      if target != nil and source.id != target.id do
-        if amount > current_balance do
-          conn
-          |> put_flash(:error, "The account has no funds for this operation!")
-          |> redirect(to: account_path(conn, :show, source))
-        else
-          Repo.transaction(fn ->
-            Repo.insert(changeset)
+      if target == nil do
+        conn
+        |> put_flash(:error, "The address account does not exist!")
+        |> redirect(to: account_path(conn, :show, source))
+      else
+        if source.id != target.id do
+          if amount > current_balance do
+            conn
+            |> put_flash(:error, "The account has no funds for this operation!")
+            |> redirect(to: account_path(conn, :show, source))
+          else
+            Repo.transaction(fn ->
+              Repo.insert(changeset)
 
-            balance = Decimal.sub(source.current_balance, amount)
-            account = Repo.get!(Account, source.id)
-            changeset = Account.changeset(account, Map.put(params, "current_balance", balance))
-            Repo.update(changeset)
-        
-            balance = Decimal.add(target.current_balance, amount)
-            account = Repo.get!(Account, target.id)
-            changeset = Account.changeset(account, Map.put(params, "current_balance", balance))
-            Repo.update(changeset)
-          end)
+              balance = Decimal.sub(source.current_balance, amount)
+              account = Repo.get!(Account, source.id)
+              changeset = Account.changeset(account, Map.put(params, "current_balance", balance))
+              Repo.update(changeset)
+          
+              balance = Decimal.add(target.current_balance, amount)
+              account = Repo.get!(Account, target.id)
+              changeset = Account.changeset(account, Map.put(params, "current_balance", balance))
+              Repo.update(changeset)
+            end)
+            conn
+            |> put_flash(:info, "Transaction added.")
+            |> redirect(to: account_path(conn, :show, source))
+          end
+        else
           conn
-          |> put_flash(:info, "Transaction added.")
+          |> put_flash(:error, "Cannot make a transaction from the same source!")
           |> redirect(to: account_path(conn, :show, source))
         end
-      else
-        conn
-        |> put_flash(:error, "Cannot make a transaction from the same source!")
-        |> redirect(to: account_path(conn, :show, source))
       end
     else
       conn
