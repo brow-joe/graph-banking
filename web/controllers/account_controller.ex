@@ -70,11 +70,11 @@ defmodule GraphBanking.AccountController do
   def add_transaction(conn, %{"transaction" => transaction_params, "account_id" => account_id}) do
     params = Map.put(transaction_params, "when", DateTime.utc_now)
     changeset = Transaction.changeset(%Transaction{}, Map.put(params, "account_id", account_id))
-    id = String.trim(params["address"])
     source = Repo.get!(Account, account_id) |> Repo.preload([:transactions])
-    target = Repo.get(Account, id) |> Repo.preload([:transactions])
 
-    if changeset.valid? do
+    if changeset.valid? and params["address"] != nil do
+      id = String.trim(params["address"])
+      target = Repo.get(Account, id) |> Repo.preload([:transactions])
       amount = Decimal.new(params["amount"])
       current_balance = source.current_balance
       if target != nil and source.id != target.id do
