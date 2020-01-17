@@ -11,8 +11,8 @@
   <% end %>
 
   <div class="form-group">
-    <label>Address</label>
-    <%= text_input f, :address, class: "form-control" %>
+    <%= label f, :address, "Address", class: "control-label" %>
+    <%= select f, :address, @accounts, class: "form-control" %>
   </div>
 
   <div class="form-group">

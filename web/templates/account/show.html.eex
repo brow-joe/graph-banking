@@ -22,7 +22,7 @@
 <div>
   <h2>Create New Transaction</h2>
   <div>
-    <%= render "transaction_form.html", account: @account, changeset: @changeset, action: account_account_path(@conn, :add_transaction, @account) %>
+    <%= render "transaction_form.html", account: @account, changeset: @changeset, accounts: @accounts, action: account_account_path(@conn, :add_transaction, @account) %>
   </div>
 </div>
 

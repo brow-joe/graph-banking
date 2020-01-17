@@ -31,8 +31,9 @@ defmodule GraphBanking.AccountController do
 
   def show(conn, %{"id" => id}) do
     account = Repo.get!(Account, id) |> Repo.preload([:transactions])
+    accounts = Repo.all(Account) |> Enum.map(&{"#{&1.id}", &1.id})
     changeset = Transaction.changeset(%Transaction{})
-    render(conn, "show.html", account: account, changeset: changeset)
+    render(conn, "show.html", account: account, changeset: changeset, accounts: accounts)
   end
 
   def edit(conn, %{"id" => id}) do
