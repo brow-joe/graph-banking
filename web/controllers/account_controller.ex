@@ -70,20 +70,40 @@ defmodule GraphBanking.AccountController do
   def add_transaction(conn, %{"transaction" => transaction_params, "account_id" => account_id}) do
     params = Map.put(transaction_params, "when", DateTime.utc_now)
     changeset = Transaction.changeset(%Transaction{}, Map.put(params, "account_id", account_id))
-    account = Account |> Repo.get(account_id) |> Repo.preload([:transactions])
+    id = String.trim(params["address"])
+    source = Repo.get!(Account, account_id) |> Repo.preload([:transactions])
+    target = Repo.get(Account, id) |> Repo.preload([:transactions])
 
     if changeset.valid? do
-      if account.id != params["address"] do
-        Repo.insert(changeset)
+      amount = Decimal.new(params["amount"])
+      current_balance = source.current_balance
+      if target != nil and source.id != target.id do
+        IO.puts "teste"
+        IO.inspect source
+        IO.puts "teste"
+        IO.inspect target
+        IO.puts "teste"
+        IO.inspect amount
+        IO.puts "teste"
+        IO.inspect current_balance
+        IO.puts "teste"
+
+        if amount > current_balance do
+          render(conn, "show.html", account: source, changeset: changeset)
+        else
+          Repo.insert(changeset)
+
+
       
-        conn
-        |> put_flash(:info, "Transaction added.")
-        |> redirect(to: account_path(conn, :show, account))
+          conn
+          |> put_flash(:info, "Transaction added.")
+          |> redirect(to: account_path(conn, :show, source))
+        end
       else
-        render(conn, "show.html", account: account, changeset: changeset)
+        render(conn, "show.html", account: source, changeset: changeset)
       end
     else
-      render(conn, "show.html", account: account, changeset: changeset)
+      render(conn, "show.html", account: source, changeset: changeset)
     end
   end
 
