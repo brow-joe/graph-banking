@@ -16,14 +16,17 @@ defmodule GraphBanking.Router do
   scope "/", GraphBanking do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
-    resources "/accounts", AccountController do
+    resources "/", AccountController do
       post "/transaction", AccountController, :add_transaction
     end
+
+    # forward "/graph", Absinthe.Plug, schema: GraphBanking.Schema
+    # forward "/graphiql", Absinthe.Plug.GraphiQL, schema: GraphBanking.Schema
   end
 
   # Other scopes may use custom stacks.
   # scope "/api", GraphBanking do
-  #   pipe_through :api
+  #   forward "/graph", Absinthe.Plug, schema: GraphBanking.Schema
+  #   forward "/graphiql", Absinthe.Plug.GraphiQL, schema: GraphBanking.Schema
   # end
 end
