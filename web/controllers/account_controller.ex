@@ -78,23 +78,22 @@ defmodule GraphBanking.AccountController do
       amount = Decimal.new(params["amount"])
       current_balance = source.current_balance
       if target != nil and source.id != target.id do
-        IO.puts "teste"
-        IO.inspect source
-        IO.puts "teste"
-        IO.inspect target
-        IO.puts "teste"
-        IO.inspect amount
-        IO.puts "teste"
-        IO.inspect current_balance
-        IO.puts "teste"
-
         if amount > current_balance do
           render(conn, "show.html", account: source, changeset: changeset)
         else
-          Repo.insert(changeset)
+          Repo.transaction(fn ->
+            Repo.insert(changeset)
 
-
-      
+            balance = Decimal.sub(source.current_balance, amount)
+            account = Repo.get!(Account, source.id)
+            changeset = Account.changeset(account, Map.put(params, "current_balance", balance))
+            Repo.update(changeset)
+        
+            balance = Decimal.add(target.current_balance, amount)
+            account = Repo.get!(Account, target.id)
+            changeset = Account.changeset(account, Map.put(params, "current_balance", balance))
+            Repo.update(changeset)
+          end)
           conn
           |> put_flash(:info, "Transaction added.")
           |> redirect(to: account_path(conn, :show, source))
