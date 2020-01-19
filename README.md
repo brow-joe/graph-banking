@@ -4,6 +4,7 @@ To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
   * Start Phoenix endpoint with `mix phx.server`
+  * Start tests `mix test`
 
 Now you can visit [`graphiql`](http://localhost:4000/graphiql) from your browser.
 
