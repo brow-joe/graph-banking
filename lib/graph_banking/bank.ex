@@ -157,14 +157,16 @@ defmodule GraphBanking.Bank do
     
     source = Repo.get!(Account, source_id)
     target = Repo.get!(Account, target_id)
-
-    update_account(source, %{"current_balance" => Decimal.sub(source.current_balance, amount)})
-    update_account(target, %{"current_balance" => Decimal.add(target.current_balance, amount)})
-
-    {:ok, transaction} = %Transaction{}
-    |> Transaction.changeset(attrs)
-    |> Repo.insert(returning: true)
-    transaction = get_transaction!(transaction.uuid)
+    
+    {:ok, transaction} = Repo.transaction(fn ->
+      update_account(source, %{"current_balance" => Decimal.sub(source.current_balance, amount)})
+      update_account(target, %{"current_balance" => Decimal.add(target.current_balance, amount)})
+      {:ok, transaction} = %Transaction{}
+      |> Transaction.changeset(attrs)
+      |> Repo.insert(returning: true)
+      transaction = get_transaction!(transaction.uuid)
+      transaction
+    end)
     transaction
   end
 
